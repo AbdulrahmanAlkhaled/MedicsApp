@@ -34,7 +34,9 @@ struct SuccessLogout: View {
                     .multilineTextAlignment(.center)
                 PrimaryButton(title: "Logout")
                     .frame(width: 200)
-                    .padding()
+                .padding(10)
+                PrimaryButton(title: "Cancel")
+                    .frame(width: 200)
             }.frame(maxWidth: .infinity)
                 .padding()
             

@@ -8,15 +8,39 @@
 import SwiftUI
 
 struct ProfileView: View {
+    let myWorkRows: Array<RowData> = [
+      RowData(
+        title: "My saved",
+        leadingImageName: "heart",
+        leadingImageBackgroundColor: .color.opacity(0.1)
+      ),
+      RowData(
+        title: "Appointment",
+        leadingImageName: "doc.plaintext",
+        leadingImageBackgroundColor: .color.opacity(0.1)
+      ),
+      RowData(
+        title: "Payment method",
+        leadingImageName: "folder",
+        leadingImageBackgroundColor: .color.opacity(0.1)
+      ),
+      RowData(
+        title: "FAQs",
+        leadingImageName: "ellipsis.message",
+        leadingImageBackgroundColor: .color.opacity(0.1)
+      ),
+      RowData(
+        title: "Logout",
+        leadingImageName: "rectangle.portrait.and.arrow.forward",
+        leadingImageBackgroundColor: .color.opacity(0.1)
+      )
+    ]
     var body: some View {
             VStack{
                 ZStack{
-                    Rectangle()
-                        .frame(width: 500, height: 600)
-                        .foregroundStyle(.color)
-                        .offset(CGSize(width: 10.0, height: -300.0))
-                        
-                    
+                    Color.color
+                      //  .ignoresSafeArea()
+                        .offset(y:-100)
                     Image("Image")
                         .resizable()
                         .frame(width: 339, height: 369)
@@ -38,17 +62,31 @@ struct ProfileView: View {
                             .resizable()
                             .frame(width: 290, height: 71)
                         Spacer()
-                        ZStack{
-                            Rectangle()
-                                .cornerRadius(25)
-                                .frame( height: 400)
-                                .foregroundColor(.white)
-                                .padding(.vertical)
-                            Image("Image 7")
-                                .resizable()
-                                .frame(width: 335,height: 323)
+                        VStack {
+                                ForEach(myWorkRows) { row in
+                                    makeRow(row: row)
+                                    if myWorkRows.last?.id != row.id {
+                                        Divider()
+                                            .padding(.leading)
+                                    }
+                                }
+                        }.background(RoundedRectangle(cornerRadius: 25)
+                            .foregroundStyle(.white)
+                            .frame(height: 400)
+                        )
+                            .padding(.vertical)
+                            .background(.white.opacity(0.75))
+                            .cornerRadius(8)
+                            
                         }
-                        
+                    
+                      .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading
+                      )
+                    
+                      //  Spacer()
+                      
                         
                     }
                     // Spacer()
@@ -57,9 +95,36 @@ struct ProfileView: View {
                 // Spacer()
                 
             }
-        }
+        
+func makeRow(row: RowData) -> some View {
+  HStack {
+    Image(systemName: row.leadingImageName)
+      .resizable()
+      .foregroundStyle(.color)
+     // .scaledToFit()
+      .frame(width: 24, height: 24)
+      .foregroundColor(row.leadingImageForegroundColor)
+      .padding(8)
+      .background(
+        RoundedRectangle(cornerRadius: 8)
+          .fill(row.leadingImageBackgroundColor)
+      )
+    Text(row.title)
+    Spacer()
+    Image(systemName: "chevron.right")
+  }
+  .padding(.horizontal)
+}
 }
 
 #Preview {
     ProfileView()
 }
+struct RowData: Identifiable {
+  let id = UUID()
+  let title: String
+  let leadingImageName: String
+  let leadingImageForegroundColor: Color = .white
+  let leadingImageBackgroundColor: Color
+}
+
